@@ -1,0 +1,14 @@
+{
+	"expo": {
+		"name": "mildblue-giphy",
+		"slug": "mildblue-giphy",
+		"scheme": "mildblue-giphy",
+		"version": "1.0.0",
+		"plugins": ["expo-router"],
+		"extra": {
+			"router": {
+				"origin": false
+			}
+		}
+	}
+}
