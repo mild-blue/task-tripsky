@@ -3,6 +3,7 @@ import { useLocalSearchParams, useRouter } from "expo-router";
 import { useQuery } from "@tanstack/react-query";
 import { GifImage } from "@/components/GifImage";
 import { fetchGifById } from "@/services/giphy";
+import { GifCard } from "@/components/GifCard";
 
 export default function DetailsScreen() {
 	const { id } = useLocalSearchParams();
@@ -10,17 +11,15 @@ export default function DetailsScreen() {
 
 	const { data } = useQuery({
 		queryKey: ["gif", id],
-		queryFn: () => fetchGifById(id),
+		queryFn: () => fetchGifById(id as string),
 	});
 
 	if (!data) return <Text>Loading...</Text>;
 
 	return (
 		<View style={{ flex: 1, padding: 20 }}>
-			<GifImage url={data.images.original.url} />
 			<Text>{data.title}</Text>
-			<Text>{data.url}</Text>
-			<Text>{data.rating.toUpperCase()}</Text>
+			<GifCard gif={data} />
 			<Button title="Back" onPress={() => router.back()} />
 		</View>
 	);
