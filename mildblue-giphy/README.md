@@ -1,8 +1,9 @@
 ## Architecture
+I mainly wanted to keep the code minimalistic and efficient without any extra, flashy third-party libraries, etc. From my experience, such things add technical debt step-by-step and it is difficult to get rid of them, so I always think twice before installing new library.
 
 - **Expo and Expo Router navigation** – Since I've did most of my coding on Nextjs where is routing done using /app folder and specific file names (page.tsx), I was looking for something that has similar structure and easy setup to start. Thans to this, I found Expo with its Expo Router and it seems like ideal combination for this task. Navigation is declarative and automatically serializes search params (e.g. `?q=cats`) so state is recovered when returning from details. Alternatives like manual state containers would require more boilerplate for the same behavior.
 - **Hooks for data fetching** – `useRandomGif` encapsulates the 10s polling window, `useGifSearch` wraps search queries with react-query, and both expose a simple return shape to screens. This separates side effects from rendering and makes unit testing trivial.
-- **Service + component layers** – `services/giphy.ts` centralizes axios calls, while `GifCard`, `GifImage`, and `SearchBar` deliver consistent UI across both screens. Adding new surfaces (e.g., favorites) would just reuse these pieces.
+- **Service + component layers** – `services/giphy.ts` centralizes axios calls, while `GifCard`, `GifImage`, and `SearchBar` deliver consistent UI across both screens. Adding new surfaces (e.g., favorites) would just reuse these pieces. If the project would start to get bigger, I would start doing specific folders for specific components. I can imagine GifCard and GifImage in one folder together.
 
 ## Third-Party Libraries
 
