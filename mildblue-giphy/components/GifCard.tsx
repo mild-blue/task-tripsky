@@ -1,0 +1,79 @@
+import { StyleSheet, Text, View } from "react-native";
+import { IGif } from "@/utils/types";
+import { getMinAgeForGiphyRating } from "@/utils/ratingFilter";
+import { GifImage } from "./GifImage";
+import React from "react";
+
+export const GifCard = React.memo(({ gif }: { gif: IGif }) => {
+	const { title = "Untitled", url = "No URL provided", rating, images } = gif;
+
+	const previewUrl = images?.fixed_width_small_still?.url ?? "";
+
+	const minAge = getMinAgeForGiphyRating(rating);
+
+	return (
+		<View style={styles.card}>
+			<Text style={styles.heading}>Random selected GIF</Text>
+
+			<GifImage url={previewUrl} />
+
+			<View style={styles.meta}>
+				<View style={styles.titleContainer}>
+					<Text style={styles.title}>{title}</Text>
+					<Text style={styles.url}>{url}</Text>
+				</View>
+
+				<Text style={styles.rating}>{minAge}+</Text>
+			</View>
+		</View>
+	);
+});
+
+const styles = StyleSheet.create({
+	card: {
+		padding: 16,
+		backgroundColor: "#101725",
+		borderRadius: 16,
+		gap: 12,
+		shadowColor: "#000",
+		shadowOffset: { width: 0, height: 8 },
+		shadowOpacity: 0.2,
+		shadowRadius: 12,
+		elevation: 8,
+	},
+	heading: {
+		color: "#9FB4FF",
+		fontSize: 12,
+		letterSpacing: 1,
+		textTransform: "uppercase",
+	},
+	meta: {
+		flexDirection: "row",
+		alignItems: "flex-start",
+		justifyContent: "space-between",
+	},
+	titleContainer: {
+		flex: 1,
+	},
+	title: {
+		flex: 1,
+		color: "#FFFFFF",
+		fontSize: 16,
+		fontWeight: "600",
+		marginBottom: 8,
+	},
+	url: {
+		color: "#A0A0A0",
+		fontSize: 12,
+	},
+	rating: {
+		color: "#F7C948",
+		borderRadius: 50,
+		paddingVertical: 4,
+		paddingHorizontal: 8,
+		backgroundColor: "rgba(247, 201, 72, 0.1)",
+		fontSize: 12,
+		fontWeight: "700",
+		letterSpacing: 0.5,
+	},
+});

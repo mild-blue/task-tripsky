@@ -1,0 +1,7 @@
+export interface IGif {
+	id: string;
+	title: string;
+	url: string;
+	rating: string;
+	images: any;
+}
