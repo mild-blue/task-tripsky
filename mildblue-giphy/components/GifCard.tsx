@@ -1,30 +1,33 @@
-import { getMinAgeForGiphyRating } from "@/utils/ratingFilter";
+import { StyleSheet, Text, View } from "react-native";
 import { IGif } from "@/utils/types";
-import { Image, StyleSheet, Text, View } from "react-native";
+import { getMinAgeForGiphyRating } from "@/utils/ratingFilter";
+import { GifImage } from "./GifImage";
+import React from "react";
 
-export function GifCard({ gif }: { gif: IGif }) {
+export const GifCard = React.memo(({ gif }: { gif: IGif }) => {
+	const { title = "Untitled", url = "No URL provided", rating, images } = gif;
+
+	const previewUrl = images?.fixed_width_small_still?.url ?? "";
+
+	const minAge = getMinAgeForGiphyRating(rating);
+
 	return (
 		<View style={styles.card}>
 			<Text style={styles.heading}>Random selected GIF</Text>
-			<Image
-				source={{ uri: gif.images.fixed_width_small_still.url }}
-				style={styles.preview}
-				resizeMode="cover"
-			/>
+
+			<GifImage url={previewUrl} />
+
 			<View style={styles.meta}>
 				<View style={styles.titleContainer}>
-					<Text style={styles.title}>{gif.title || "Untitled"}</Text>
-					<Text style={styles.url}>
-						{gif.url || "No URL provided"}
-					</Text>
+					<Text style={styles.title}>{title}</Text>
+					<Text style={styles.url}>{url}</Text>
 				</View>
-				<Text style={styles.rating}>
-					{getMinAgeForGiphyRating(gif.rating)}+
-				</Text>
+
+				<Text style={styles.rating}>{minAge}+</Text>
 			</View>
 		</View>
 	);
-}
+});
 
 const styles = StyleSheet.create({
 	card: {
@@ -43,11 +46,6 @@ const styles = StyleSheet.create({
 		fontSize: 12,
 		letterSpacing: 1,
 		textTransform: "uppercase",
-	},
-	preview: {
-		width: "100%",
-		height: 200,
-		borderRadius: 12,
 	},
 	meta: {
 		flexDirection: "row",

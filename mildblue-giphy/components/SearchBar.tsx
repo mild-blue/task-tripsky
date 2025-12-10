@@ -1,20 +1,59 @@
-import { View, TextInput, Button } from "react-native";
+import React from "react";
+import { View, TextInput, Button, StyleSheet } from "react-native";
 
-export function SearchBar({ value, onChange, onCancel }: any) {
-	return (
-		<View style={{ flexDirection: "row", padding: 10 }}>
-			<TextInput
-				style={{
-					flex: 1,
-					borderWidth: 1,
-					padding: 10,
-					borderRadius: 6,
-				}}
-				placeholder="Search GIFs..."
-				value={value}
-				onChangeText={onChange}
-			/>
-			{value.length > 0 && <Button title="Cancel" onPress={onCancel} />}
-		</View>
-	);
-}
+type SearchBarProps = {
+	value: string;
+	onChange: (text: string) => void;
+	onCancel: () => void;
+	placeholder?: string;
+};
+
+export const SearchBar = React.memo(
+	({
+		value,
+		onChange,
+		onCancel,
+		placeholder = "Search GIFs...",
+	}: SearchBarProps) => {
+		const showCancel = value.trim().length > 0;
+
+		return (
+			<View style={styles.container}>
+				<TextInput
+					style={styles.input}
+					value={value}
+					onChangeText={onChange}
+					placeholder={placeholder}
+					returnKeyType="search"
+					autoCorrect={false}
+					autoCapitalize="none"
+					accessibilityLabel="Search GIFs"
+				/>
+
+				{showCancel && (
+					<Button
+						title="Cancel"
+						onPress={onCancel}
+						accessibilityLabel="Cancel search input"
+					/>
+				)}
+			</View>
+		);
+	}
+);
+
+const styles = StyleSheet.create({
+	container: {
+		flexDirection: "row",
+		alignItems: "center",
+		padding: 10,
+		gap: 8,
+	},
+	input: {
+		flex: 1,
+		borderWidth: 1,
+		paddingHorizontal: 12,
+		paddingVertical: 10,
+		borderRadius: 8,
+	},
+});
