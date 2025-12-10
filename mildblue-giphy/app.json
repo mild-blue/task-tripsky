@@ -1,14 +1,19 @@
 {
-	"expo": {
-		"name": "mildblue-giphy",
-		"slug": "mildblue-giphy",
-		"scheme": "mildblue-giphy",
-		"version": "1.0.0",
-		"plugins": ["expo-router"],
-		"extra": {
-			"router": {
-				"origin": false
-			}
-		}
-	}
+  "expo": {
+    "name": "mildblue-giphy",
+    "slug": "mildblue-giphy",
+    "scheme": "mildblue-giphy",
+    "version": "1.0.0",
+    "plugins": [
+      "expo-router"
+    ],
+    "extra": {
+      "router": {
+        "origin": false
+      }
+    },
+    "ios": {
+      "bundleIdentifier": "com.anonymous.mildblue-giphy"
+    }
+  }
 }

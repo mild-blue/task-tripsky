@@ -4,9 +4,10 @@ import { IGif } from "@/utils/types";
 
 export function useRandomGif(searchTerm: string) {
 	const [gif, setGif] = useState<IGif | null>(null);
+	const isIdle = searchTerm.length < 2;
 
 	useEffect(() => {
-		if (searchTerm.length >= 2) return;
+		if (!isIdle) return;
 
 		let interval: NodeJS.Timeout;
 
@@ -19,7 +20,7 @@ export function useRandomGif(searchTerm: string) {
 		interval = setInterval(loadGif, 10000);
 
 		return () => clearInterval(interval);
-	}, [searchTerm]);
+	}, [isIdle]);
 
 	return gif;
 }
