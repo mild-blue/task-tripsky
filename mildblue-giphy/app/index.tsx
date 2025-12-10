@@ -6,6 +6,7 @@ import {
 	FlatList,
 	StyleSheet,
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { SearchBar } from "@/components/SearchBar";
 import { GifCard } from "@/components/GifCard";
@@ -38,67 +39,92 @@ export default function HomeScreen() {
 	const isSearching = searchTerm.length >= 2 && results;
 
 	return (
-		<View style={{ flex: 1 }}>
-			<SearchBar
-				value={searchTerm}
-				onChange={updateSearchTerm}
-				onCancel={() => updateSearchTerm("")}
-			/>
-
-			{isSearching ? (
-				<FlatList
-					data={results}
-					keyExtractor={(item) => item.id}
-					numColumns={3}
-					columnWrapperStyle={styles.column}
-					contentContainerStyle={styles.listContent}
-					renderItem={({ item }) => (
-						<TouchableOpacity
-							style={styles.tile}
-							onPress={() =>
-								router.push({
-									pathname: "/detail/[id]",
-									params: {
-										id: item.id,
-										q: searchTerm || undefined,
-									},
-								})
-							}
-						>
-							<GifImage
-								url={item.images.fixed_width_small.url}
-								style={styles.tileImage}
-							/>
-						</TouchableOpacity>
-					)}
+		<SafeAreaView style={styles.screen}>
+			<View style={styles.content}>
+				<SearchBar
+					value={searchTerm}
+					onChange={updateSearchTerm}
+					onCancel={() => updateSearchTerm("")}
 				/>
-			) : randomGif ? (
-				<View style={{ padding: 20 }}>
-					<GifCard gif={randomGif} />
-				</View>
-			) : (
-				<Text style={{ padding: 20 }}>Loading...</Text>
-			)}
-		</View>
+
+				{isSearching ? (
+					<FlatList
+						data={results}
+						keyExtractor={(item) => item.id}
+						numColumns={3}
+						columnWrapperStyle={styles.column}
+						contentContainerStyle={styles.listContent}
+						showsVerticalScrollIndicator={false}
+						renderItem={({ item }) => (
+							<TouchableOpacity
+								style={styles.tile}
+								onPress={() =>
+									router.push({
+										pathname: "/detail/[id]",
+										params: {
+											id: item.id,
+											q: searchTerm || undefined,
+										},
+									})
+								}
+							>
+								<GifImage
+									url={item.images.fixed_width_small.url}
+									style={styles.tileImage}
+								/>
+							</TouchableOpacity>
+						)}
+					/>
+				) : randomGif ? (
+					<View style={styles.randomSection}>
+						<Text>Random pick</Text>
+						<GifCard gif={randomGif} />
+					</View>
+				) : (
+					<View style={styles.emptyState}>
+						<Text style={styles.emptyText}>
+							Loading trending GIFs…
+						</Text>
+					</View>
+				)}
+			</View>
+		</SafeAreaView>
 	);
 }
 
 const styles = StyleSheet.create({
+	screen: {
+		flex: 1,
+	},
+	content: {
+		flex: 1,
+		padding: 16,
+		gap: 12,
+	},
 	listContent: {
-		paddingHorizontal: 16,
-		paddingBottom: 80,
+		paddingBottom: 60,
 	},
 	column: {
 		justifyContent: "space-between",
 	},
 	tile: {
 		flex: 1,
-		borderRadius: 14,
+		borderRadius: 8,
 		overflow: "hidden",
 		marginBottom: 12,
 		marginHorizontal: 6,
 	},
 	tileImage: {
 		height: 140,
+	},
+	randomSection: {
+		gap: 8,
+	},
+	emptyState: {
+		padding: 20,
+		alignItems: "center",
+	},
+	emptyText: {
+		color: "#444",
 	},
 });

@@ -1,4 +1,5 @@
-import { View, Text, Button } from "react-native";
+import { View, Text, Button, StyleSheet } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useQuery } from "@tanstack/react-query";
 import { fetchGifById } from "@/services/giphy";
@@ -29,17 +30,32 @@ export default function DetailsScreen() {
 	if (!data) return <Text>Loading...</Text>;
 
 	return (
-		<View style={{ flex: 1, padding: 20 }}>
-			<View
-				style={{
-					flexDirection: "row",
-					justifyContent: "space-between",
-				}}
-			>
+		<SafeAreaView style={styles.screen}>
+			<View style={styles.header}>
 				<Button title="Back" onPress={handleBack} />
-				<Text>{data.title}</Text>
+				<Text numberOfLines={2} style={styles.title}>
+					{data.title || "GIF details"}
+				</Text>
 			</View>
 			<GifCard gif={data} />
-		</View>
+		</SafeAreaView>
 	);
 }
+
+const styles = StyleSheet.create({
+	screen: {
+		flex: 1,
+		paddingHorizontal: 16,
+	},
+	header: {
+		flexDirection: "row",
+		alignItems: "center",
+		marginBottom: 12,
+		gap: 12,
+	},
+	title: {
+		flex: 1,
+		fontSize: 18,
+		fontWeight: "600",
+	},
+});
